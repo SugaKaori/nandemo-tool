@@ -58,7 +58,7 @@
 
 .cr-each-calc-wrapper {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .cr-each-calc-unit {
@@ -77,6 +77,6 @@
 
 .cr-each-miss-wrapper {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   margin: 20px 0 30px;
 }

@@ -4,6 +4,7 @@ import { Input } from "../core/Input/input";
 export const CashRegister: React.FC = () => {
   const [one, setOne] = useState<string | number>('');
   const [five, setFive] = useState<string | number>('');
+  const [fiveTen, setFiveTen] = useState<string | number>('');
   const [ten, setTen] = useState<string | number>('');
   const [oneHundred, setOneHundred] = useState<string | number>('');
   const [fiveHundred, setFiveHundred] = useState<string | number>('');
@@ -13,6 +14,7 @@ export const CashRegister: React.FC = () => {
   const [oneCalc, setOneCalc] = useState<number>(0);
   const [fiveCalc, setFiveCalc] = useState<number>(0);
   const [tenCalc, setTenCalc] = useState<number>(0);
+  const [fiveTenCalc, setFiveTenCalc] = useState<number>(0);
   const [oneHundredCalc, setOneHundredCalc] = useState<number>(0);
   const [fiveHundredCalc, setFiveHundredCalc] = useState<number>(0);
   const [oneThousandCalc, setOneThousandCalc] = useState<number>(0);
@@ -23,14 +25,14 @@ export const CashRegister: React.FC = () => {
   const [miss, setMiss] = useState<number>(0);
 
   useEffect(() => {
-    const moneylist = [oneCalc, fiveCalc, tenCalc, oneHundredCalc, fiveHundredCalc, oneThousandCalc, fiveThousandCalc, tenThousandCalc];
+    const moneylist = [oneCalc, fiveCalc, tenCalc, fiveTenCalc, oneHundredCalc, fiveHundredCalc, oneThousandCalc, fiveThousandCalc, tenThousandCalc];
     const calcValue = moneylist.reduce((acc, cur) => {
       const accVal = !Number.isNaN(Number(acc)) ? acc as number : 0;
       const curVal = !Number.isNaN(Number(cur)) ? cur as number : 0;
       return accVal + curVal;
     });
     setCalc(calcValue);
-  }, [fiveCalc, fiveHundredCalc, fiveThousandCalc, oneCalc, oneHundredCalc, oneThousandCalc, tenCalc, tenThousandCalc]);
+  }, [fiveCalc, fiveHundredCalc, fiveTenCalc, fiveThousandCalc, oneCalc, oneHundredCalc, oneThousandCalc, tenCalc, tenThousandCalc]);
 
   useEffect(() => {
     const val = accCalc ? Number(accCalc) - calc : 0;
@@ -100,6 +102,26 @@ export const CashRegister: React.FC = () => {
             <div className="cr-each-calc-wrapper">
               <div className="cr-each-calc-unit">計：</div>
               <div className="cr-each-calc">{tenCalc}</div>
+              <div className="cr-each-calc-unit">円</div>
+            </div>
+          </div>
+          <div className="cr-wrapper">
+            <div>
+              <Input
+                label="50円の枚数"
+                value={fiveTen}
+                unit="枚"
+                placeholder="50円の枚数を入力"
+                onChange={(e) => {
+                  const val = getActualVal(e.target.value);
+                  setFiveTen(val);
+                  setFiveTenCalc(val ? Number(val) * 50 : 0);
+                }}
+              />
+            </div>
+            <div className="cr-each-calc-wrapper">
+              <div className="cr-each-calc-unit">計：</div>
+              <div className="cr-each-calc">{fiveTenCalc}</div>
               <div className="cr-each-calc-unit">円</div>
             </div>
           </div>
