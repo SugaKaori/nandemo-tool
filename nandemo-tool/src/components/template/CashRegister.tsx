@@ -9,6 +9,7 @@ export const CashRegister: React.FC = () => {
   const [oneHundred, setOneHundred] = useState<string | number>('');
   const [fiveHundred, setFiveHundred] = useState<string | number>('');
   const [oneThousand, setOneThousand] = useState<string | number>('');
+  const [twoThousand, setTwoThousand] = useState<string | number>('');
   const [fiveThousand, setFiveThousand] = useState<string | number>('');
   const [tenThousand, setTenThousand] = useState<string | number>('');
   const [oneCalc, setOneCalc] = useState<number>(0);
@@ -18,6 +19,7 @@ export const CashRegister: React.FC = () => {
   const [oneHundredCalc, setOneHundredCalc] = useState<number>(0);
   const [fiveHundredCalc, setFiveHundredCalc] = useState<number>(0);
   const [oneThousandCalc, setOneThousandCalc] = useState<number>(0);
+  const [twoThousandCalc, setTwoThousandCalc] = useState<number>(0);
   const [fiveThousandCalc, setFiveThousandCalc] = useState<number>(0);
   const [tenThousandCalc, setTenThousandCalc] = useState<number>(0);
   const [accCalc, setAccCalc] = useState<string | number>('');
@@ -25,14 +27,14 @@ export const CashRegister: React.FC = () => {
   const [miss, setMiss] = useState<number>(0);
 
   useEffect(() => {
-    const moneylist = [oneCalc, fiveCalc, tenCalc, fiveTenCalc, oneHundredCalc, fiveHundredCalc, oneThousandCalc, fiveThousandCalc, tenThousandCalc];
+    const moneylist = [oneCalc, fiveCalc, tenCalc, fiveTenCalc, oneHundredCalc, fiveHundredCalc, oneThousandCalc, twoThousandCalc, fiveThousandCalc, tenThousandCalc];
     const calcValue = moneylist.reduce((acc, cur) => {
       const accVal = !Number.isNaN(Number(acc)) ? acc as number : 0;
       const curVal = !Number.isNaN(Number(cur)) ? cur as number : 0;
       return accVal + curVal;
     });
     setCalc(calcValue);
-  }, [fiveCalc, fiveHundredCalc, fiveTenCalc, fiveThousandCalc, oneCalc, oneHundredCalc, oneThousandCalc, tenCalc, tenThousandCalc]);
+  }, [fiveCalc, fiveHundredCalc, fiveTenCalc, fiveThousandCalc, oneCalc, oneHundredCalc, oneThousandCalc, tenCalc, tenThousandCalc, twoThousandCalc]);
 
   useEffect(() => {
     const val = accCalc ? Number(accCalc) - calc : 0;
@@ -188,6 +190,26 @@ export const CashRegister: React.FC = () => {
           <div className="cr-wrapper">
             <div>
               <Input
+                label="2000円の枚数"
+                value={twoThousand}
+                unit="枚"
+                placeholder="2000円の枚数を入力"
+                onChange={(e) => {
+                  const val = getActualVal(e.target.value);
+                  setTwoThousand(val);
+                  setTwoThousandCalc(val ? Number(val) * 2000 : 0);
+                }}
+              />
+            </div>
+            <div className="cr-each-calc-wrapper">
+              <div className="cr-each-calc-unit">計：</div>
+              <div className="cr-each-calc">{twoThousandCalc}</div>
+              <div className="cr-each-calc-unit">円</div>
+            </div>
+          </div>
+          <div className="cr-wrapper">
+            <div>
+              <Input
                 label="5000円の枚数"
                 unit="枚"
                 value={fiveThousand}
@@ -232,6 +254,8 @@ export const CashRegister: React.FC = () => {
           </div>
           <div className="cr-each-miss-wrapper">
             <div className="cr-calc-title">過不足：</div>
+            <div className="cr-each-calc">{calc || 0}</div>
+            <div className="cr-each-calc-unit">-</div>
             <Input
               value={accCalc}
               placeholder="前回の金額を入力"
@@ -240,8 +264,6 @@ export const CashRegister: React.FC = () => {
                 setAccCalc(val);
               }}
             />
-            <div className="cr-each-calc-unit">-</div>
-            <div className="cr-each-calc">{calc || 0}</div>
             <div className="cr-each-calc-unit">=</div>
             <div className="cr-each-calc">{miss || 0}</div>
             <div className="cr-each-calc-unit">円</div>
